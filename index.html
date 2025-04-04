@@ -1,0 +1,32 @@
+<!-- dart-runner.html -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Dart Runner</title>
+    <script src="https://dartpad.dev/inject_embed.dart.js"></script>
+  </head>
+  <body>
+    <div id="embed-dartpad"></div>
+
+    <script>
+      // Listen for incoming Dart code
+      window.addEventListener("message", (event) => {
+        const code = event.data;
+        if (!code) return;
+
+        const div = document.getElementById("embed-dartpad");
+        div.innerHTML = ""; // Clear previous
+
+        window.embedDartPad({
+          element: div,
+          embedMode: "run",
+          theme: "dark",
+          source: code,
+          // Optional: specify Dart/Flutter mode
+          // sdk: 'flutter'
+        });
+      });
+    </script>
+  </body>
+</html>
