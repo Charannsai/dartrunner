@@ -1,38 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Dart Runner</title>
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-    }
-    iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-  </style>
-</head>
-<body>
-  <iframe id="dartpad" src="https://dartpad.dev/embed-flutter.html?theme=dark&run=true"></iframe>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>DartPad Runner</title>
+    <script src="https://dartpad.dev/inject_embed.dart.js"></script>
+  </head>
+  <body>
+    <div id="dartpad-container"></div>
 
-  <script>
-    window.addEventListener("message", (event) => {
-      const { data } = event;
+    <script>
+      window.addEventListener("message", function (event) {
+        if (typeof event.data === "string") {
+          const sourceCode = event.data;
 
-      if (typeof data === "string") {
-        const iframe = document.getElementById("dartpad");
-        const dartMessage = {
-          sourceCode: data,
-          type: "sourceCode"
-        };
+          // Clean previous iframe
+          const container = document.getElementById("dartpad-container");
+          container.innerHTML = "";
 
-        iframe.contentWindow.postMessage(dartMessage, "*");
-      }
-    });
-  </script>
-</body>
+          // Inject new DartPad iframe
+          injectEmbed({
+            width: "100%",
+            height: "500px",
+            mode: "dart",
+            theme: "dark",
+            run: true,
+            split: "50",
+            code: sourceCode,
+            elementId: "dartpad-container"
+          });
+        }
+      });
+    </script>
+  </body>
 </html>
